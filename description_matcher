@@ -1,0 +1,39 @@
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+def preprocess_text(text):
+
+    text = text.lower()
+
+    text = ''.join(e for e in text if e.isalnum() or e.isspace())
+    return text
+
+def calculate_similarity(description1, description2, threshold=0.7):
+
+    preprocessed_description1 = preprocess_text(description1)
+    preprocessed_description2 = preprocess_text(description2)
+
+
+    tfidf_vectorizer = TfidfVectorizer()
+
+    tfidf_matrix1 = tfidf_vectorizer.fit_transform([preprocessed_description1])
+    tfidf_matrix2 = tfidf_vectorizer.transform([preprocessed_description2])
+
+    cosine_sim_matrix = cosine_similarity(tfidf_matrix1, tfidf_matrix2)
+
+    if cosine_sim_matrix[0, 0] > threshold:
+        return True, cosine_sim_matrix[0, 0]
+    else:
+        return False, cosine_sim_matrix[0, 0]
+
+def compare_descriptions(description1, description2):
+    similarity_score = calculate_similarity(description1, description2)
+    return similarity_score
+
+
+description1 = "Loaded with BBQ-infused beef pepperoni, savory imported chicken sausage, gooey imported mozzarella, fresh capsicum, zesty green chili, tangy black olives, all smothered in a rich BBQ-soaked marinara sauce."
+description2 = "Topped with Beef Pepperoni (BBQ), Imported Chicken Sausage (BBQ), Imported Mozzarella, Capsicum, Green Chilli, Black Olive, BBQ Soaked Marinara Sauce."
+
+
+similarity_score = compare_descriptions(description1, description2)
+print(similarity_score)
