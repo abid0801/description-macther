@@ -58,6 +58,3 @@ print(similarity_score)
 - Ensure that descriptions are provided as strings.
 - Adjust the threshold parameter according to the desired similarity threshold.
 
----
-
-Feel free to customize this README according to your project's specific needs!
